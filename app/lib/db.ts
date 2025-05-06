@@ -1,11 +1,8 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 
-export async function executeQuery(query, params = []) {
-  try {
-    const result = await sql.query(query, params);
-    return result.rows;
-  } catch (error) {
-    console.error('Error ejecutando la consulta:', error);
-    throw new Error('Error en la base de datos');
-  }
-}
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Asegúrate de tener esta variable en Vercel y local
+  ssl: { rejectUnauthorized: false }
+});
+
+export default pool;
